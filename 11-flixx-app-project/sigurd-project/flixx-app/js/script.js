@@ -17,13 +17,15 @@ function highlightNavItem(){
 }
 
 function filterUrl(url){
-  return url.replace("/11-flixx-app-project/sigurd-project/flixx-app/", '');
+  console.log(url)
+  return url.replace("sigurd-project/flixx-app/", '');
 }
 
 
 function init(){
 
   highlightNavItem()
+  console.log(filterUrl(global.currentPage))
 
   switch(filterUrl(global.currentPage)) {
     case '/':
@@ -32,11 +34,16 @@ function init(){
       displayPopularShows();
       console.log('home 1')
       break;
-    case 'index.html':
+    case '/index.html':
       displayPopularMovies();
       displayPopularShows();
       console.log('home 2')
       break;
+    case '/shows.html':
+      displayPopularShows();
+      console.log('shows')
+      break;
+      case 'search.html':
     case 'search.html':
       console.log('search')
       break;
@@ -44,7 +51,7 @@ function init(){
       console.log('details')
       displayMovieDetails()
       break;
-      case 'shows.html':
+      case 'shows-details.html':
       displayShowDetails()
       console.log('Shows')
       break;

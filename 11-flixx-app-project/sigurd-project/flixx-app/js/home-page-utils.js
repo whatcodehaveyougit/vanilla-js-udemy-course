@@ -43,7 +43,8 @@ async function displayPopularMovies(){
 
 async function displayPopularShows(){
   toggleSpinner()
-  const {results} = await fetchAPIData('show/popular')
+  console.log('helo')
+  const {results} = await fetchAPIData('tv/popular')
   results.forEach((show) => {
     const div = document.createElement('div')
     div.classList.add('card');
@@ -53,7 +54,7 @@ async function displayPopularShows(){
           `<img
         src="https://image.tmdb.org/t/p/w500${show.poster_path}"
         class="card-img-top"
-        alt=${show.title}
+        alt=${show.name}
       />` :
         `<img
         src="images/no-image.jpg"
@@ -62,9 +63,9 @@ async function displayPopularShows(){
       />`}
     </a>
     <div class="card-body">
-      <h5 class="card-title">${show.title}</h5>
+      <h5 class="card-title">${show.name}</h5>
       <p class="card-text">
-        <small class="text-muted">${show.release_date}</small>
+        <small class="text-muted">${show.first_air_date}</small>
       </p>
     </div>`
     removeSpinner()
