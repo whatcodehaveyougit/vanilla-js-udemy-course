@@ -14,7 +14,7 @@ function displayBackgroundImage(type, backgroundPath) {
 
   if (type === 'movie') {
     document.querySelector('#movie-details').appendChild(overlayDiv);
-  } else {
+  } else if (type === 'show') {
     document.querySelector('#show-details').appendChild(overlayDiv);
   }
 }

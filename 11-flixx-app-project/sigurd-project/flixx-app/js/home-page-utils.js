@@ -1,7 +1,6 @@
 
 import { fetchAPIData } from './generic-utils.js';
 
-
 function toggleSpinner(){
   // This does not remove it for some reason
   document.querySelector('.spinner').classList.toggle('show')
@@ -42,4 +41,35 @@ async function displayPopularMovies(){
     })
 }
 
-export { displayPopularMovies}
+async function displayPopularShows(){
+  toggleSpinner()
+  const {results} = await fetchAPIData('show/popular')
+  results.forEach((show) => {
+    const div = document.createElement('div')
+    div.classList.add('card');
+    div.innerHTML =
+    `<a href="show-details.html?id=${show.id}">
+        ${ show.poster_path ?
+          `<img
+        src="https://image.tmdb.org/t/p/w500${show.poster_path}"
+        class="card-img-top"
+        alt=${show.title}
+      />` :
+        `<img
+        src="images/no-image.jpg"
+        class="card-img-top"
+        alt="show Title"
+      />`}
+    </a>
+    <div class="card-body">
+      <h5 class="card-title">${show.title}</h5>
+      <p class="card-text">
+        <small class="text-muted">${show.release_date}</small>
+      </p>
+    </div>`
+    removeSpinner()
+    document.querySelector('#popular-shows').appendChild(div)
+    })
+}
+
+export { displayPopularMovies, displayPopularShows}

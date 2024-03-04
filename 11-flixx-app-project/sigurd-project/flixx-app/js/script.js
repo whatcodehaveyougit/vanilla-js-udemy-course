@@ -1,5 +1,6 @@
-import {displayMovieDetails } from './movie-details-utils.js'
-import { displayPopularMovies } from './home-page-utils.js'
+import { displayMovieDetails } from './movie-details-utils.js'
+import { displayPopularMovies, displayPopularShows } from './home-page-utils.js'
+import { displayShowDetails } from './show-details-utils.js'
 
 const global = {
   currentPage: window.location.pathname
@@ -16,24 +17,24 @@ function highlightNavItem(){
 }
 
 function filterUrl(url){
-  return url.replace("/11-flixx-app-project/01-theme-overview-prep/flixx-app/", '');
+  return url.replace("/11-flixx-app-project/sigurd-project/flixx-app/", '');
 }
 
 
-
-
 function init(){
-
 
   highlightNavItem()
 
   switch(filterUrl(global.currentPage)) {
     case '/':
+      console.log('home here')
       displayPopularMovies();
+      displayPopularShows();
       console.log('home 1')
       break;
     case 'index.html':
       displayPopularMovies();
+      displayPopularShows();
       console.log('home 2')
       break;
     case 'search.html':
@@ -44,15 +45,13 @@ function init(){
       displayMovieDetails()
       break;
       case 'shows.html':
+      displayShowDetails()
       console.log('Shows')
       break;
     default:
       // code block
   }
 }
-
-// Next step - Write first Fetch request
-
 
 
 init();
