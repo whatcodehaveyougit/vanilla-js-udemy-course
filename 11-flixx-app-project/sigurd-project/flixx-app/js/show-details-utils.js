@@ -5,9 +5,9 @@ import {displayBackgroundImage} from "./generic-utils.js"
 
 async function displayShowDetails(){
   const searchId = window.location.search.split('=')[1]
-  const show = await fetchAPIData(`show/${searchId}`)
+  const show = await fetchAPIData(`tv/${searchId}`)
   const div = document.createElement('div');
-  displayBackgroundImage('show', show.backdrop_path)
+  displayBackgroundImage('tv', show.backdrop_path)
 
   div.innerHTML =
     `<div class="details-top">
@@ -16,7 +16,7 @@ async function displayShowDetails(){
         `<img
       src="https://image.tmdb.org/t/p/w500${show.poster_path}"
       class="card-img-top"
-      alt=${show.title}
+      alt=${show.name}
     />` :
       `<img
       src="images/no-image.jpg"
@@ -25,20 +25,14 @@ async function displayShowDetails(){
   />`}
     </div>
     <div>
-      <h2>${show.title}</h2>
+      <h2>${show.name}</h2>
       <p>
         <i class="fas fa-star text-primary"></i>
         ${show.vote_average} / 10
       </p>
-      <p class="text-muted">Release Date: XX/XX/XXXX</p>
+      <p class="text-muted">Last Air Date: ${show.last_air_date}</p>
       <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores
-        atque molestiae error debitis provident dolore hic odit, impedit
-        sint, voluptatum consectetur assumenda expedita perferendis
-        obcaecati veritatis voluptatibus. Voluptatum repellat suscipit,
-        quae molestiae cupiditate modi libero dolorem commodi obcaecati!
-        Ratione quia corporis recusandae delectus perspiciatis consequatur
-        ipsam. Cumque omnis ad recusandae.
+        ${show.overview}
       </p>
       <h5>Genres</h5>
       <ul class="list-group">
@@ -50,9 +44,6 @@ async function displayShowDetails(){
   <div class="details-bottom">
     <h2>show Info</h2>
     <ul>
-      <li><span class="text-secondary">Budget:</span>$${formatNumberWithCommas(show.budget)}</li>
-      <li><span class="text-secondary">Revenue:</span>$${formatNumberWithCommas(show.revenue)}</li>
-      <li><span class="text-secondary">Runtime:</span> ${show.runtime} minutes</li>
       <li><span class="text-secondary">Status:</span> Released</li>
     </ul>
     ${ show.production_companies.length ?
