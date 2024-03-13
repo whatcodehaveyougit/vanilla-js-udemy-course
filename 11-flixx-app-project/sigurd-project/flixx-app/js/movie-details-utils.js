@@ -3,7 +3,7 @@ import { fetchAPIData, formatNumberWithCommas } from './generic-utils.js'
 
 export async function displayMovieDetails(){
   const searchId = window.location.search.split('=')[1]
-  const movie = await fetchAPIData(`movie/${searchId}`)
+  const movie = await fetchAPIData(`movie/${searchId}?`)
   const div = document.createElement('div');
   displayBackgroundImage('movie', movie.backdrop_path)
   // console.log(movie);

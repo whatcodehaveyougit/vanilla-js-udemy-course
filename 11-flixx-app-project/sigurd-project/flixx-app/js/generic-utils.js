@@ -19,11 +19,16 @@ function displayBackgroundImage(type, backgroundPath) {
   }
 }
 
-async function fetchAPIData(endpoint){
+
+async function fetchAPIData(endpoint, queryString = ''){
   const API_KEY = '3fba2112c4120089009c0ca88d8eefcd'
   const API_URL = 'https://api.themoviedb.org/3/'
-  const res = await fetch(`${API_URL}${endpoint}?api_key=${API_KEY}`)
+  const fullEndpoint = `${API_URL}${endpoint}?api_key=${API_KEY}&${queryString}`
+  console.log(fullEndpoint)
+  // Show spinner ?
+  const res = await fetch(fullEndpoint)
   const res2 = await res.json();
+  // Hide spinner ?
   return res2;
 }
 
@@ -32,4 +37,13 @@ function formatNumberWithCommas(number) {
 }
 
 
-export { displayBackgroundImage, fetchAPIData, formatNumberWithCommas };
+
+
+
+function filterUrl(url){
+  // console.log(url)
+  return url.replace("sigurd-project/flixx-app/", '');
+}
+
+
+export { displayBackgroundImage, fetchAPIData, formatNumberWithCommas, filterUrl };

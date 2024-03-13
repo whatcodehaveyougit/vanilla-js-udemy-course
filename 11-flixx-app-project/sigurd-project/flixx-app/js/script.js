@@ -1,10 +1,17 @@
 import { displayMovieDetails } from './movie-details-utils.js'
 import { displayPopularMovies, displayPopularShows } from './home-page-utils.js'
 import { displayShowDetails } from './show-details-utils.js'
-import { fetchAPIData } from './generic-utils.js'
+import { fetchAPIData, filterUrl } from './generic-utils.js'
+import { initSwiper } from './swiper-utils.js'
 
 const global = {
-  currentPage: window.location.pathname
+  currentPage: window.location.pathname,
+  search: {
+    term: '',
+    type: '',
+    page: 1,
+    totalPages: 1
+  }
 }
 
 const navItems = document.querySelectorAll('.nav-link')
@@ -17,9 +24,14 @@ function highlightNavItem(){
   })
 }
 
-function filterUrl(url){
-  // console.log(url)
-  return url.replace("sigurd-project/flixx-app/", '');
+function showAlert(message, className){
+  const alertEl = document.createElement('div');
+  alertEl.classList.add('alert', className);
+  alertEl.appendChild(document.createTextNode(message));
+  document.querySelector('#alert').appendChild(alertEl);
+  setTimeout(() => {
+    alertEl.remove();
+  }, 3000)
 }
 
 async function displaySlider(){
@@ -36,38 +48,29 @@ async function displaySlider(){
     </h4>`
     document.querySelector('.swiper-wrapper').appendChild(div);
   })
-
   initSwiper();
 }
 
-function initSwiper(){
-  const swiper = new Swiper('.swiper', {
-    slidesPerView: 3,
-    spaceBetween: 30,
-    freeMode: true,
-    loop: true,
-    autoplay: {
-      delay: 2500,
-      disableOnInteraction: false,
-    },
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true,
-    },
-    breakpoints: {
-      500: {
-        slidesPerView: 2
-      },
-      700: {
-        slidesPerView: 3
-      },
-      900: {
-        slidesPerView: 4
-      },
-      }
-    })
-  }
 
+  async function search(){
+    const queryString = window.location.search;
+    console.log(queryString)
+    const urlParams = new URLSearchParams(queryString);
+    const type = urlParams.get('type');
+    const searchTerm = urlParams.get('search-term');
+
+    global.search.term = searchTerm;
+    global.search.type = type;
+
+    if (global.search.term !== '' && global.search.term !== null){
+      //  Make Request
+      const res = await fetchAPIData(`search/${global.search.type}`, `query=${global.search.term}&page=${global.search.page}&language=en-US`);
+      console.log(res)
+    } else {
+      showAlert('No search term provided')
+    }
+    console.log(urlParams)
+  }
 
 
 function init(){
@@ -95,6 +98,8 @@ function init(){
       console.log('shows')
       break;
     case '/search.html':
+      search()
+      console.log('search')
       break;
     case '/movie-details.html':
       displayMovieDetails()
