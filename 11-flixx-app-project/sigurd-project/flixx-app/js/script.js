@@ -1,5 +1,5 @@
 import { displayMovieDetails } from './movie-details-utils.js'
-import { displayPopularMovies, displayPopularShows } from './home-page-utils.js'
+import { displayPopularMovies, displayPopularShows, displayPopularMoviesFromSearch } from './home-page-utils.js'
 import { displayShowDetails } from './show-details-utils.js'
 import { fetchAPIData, filterUrl } from './generic-utils.js'
 import { initSwiper } from './swiper-utils.js'
@@ -10,8 +10,9 @@ const global = {
     term: '',
     type: '',
     page: 1,
-    totalPages: 1
-  }
+    totalPages: 1,
+    totalResults: 0
+  },
 }
 
 const navItems = document.querySelectorAll('.nav-link')
@@ -65,11 +66,46 @@ async function displaySlider(){
     if (global.search.term !== '' && global.search.term !== null){
       //  Make Request
       const res = await fetchAPIData(`search/${global.search.type}`, `query=${global.search.term}&page=${global.search.page}&language=en-US`);
+      const {results, page, total_results, total_pages } = res
+      document.querySelector('#search-results-heading').innerHTML = `${results.length} result displaying of ${total_results} for the search term ${global.search.term}`
+      global.search.totalPages = total_pages;
+      global.search.page = page
+      global.search.totalResults = total_results
       console.log(res)
+      console.log(page)
+      if(results.length === 0){
+        showAlert('No results found')
+      } else {
+        displayPopularMoviesFromSearch(results, global.search.type)
+      }
     } else {
       showAlert('No search term provided')
     }
+    makePagination()
     console.log(urlParams)
+  }
+
+  function makePagination(){
+
+
+    document.querySelector('#pagination').innerHTML = `
+    <div class="pagination">
+      <button class="btn btn-primary" id="prev">Prev</button>
+      <button class="btn btn-primary" id="next">Next</button>
+      <div class="page-counter">Page ${global.search.page} of ${global.search.totalPages}</div>
+    </div`
+
+    document.querySelector('#prev').addEventListener('click', async () => {
+      document.querySelector('#search-results').innerHTML = '';
+      global.search.page = global.search.page - 1;
+      search()
+    })
+
+    document.querySelector('#next').addEventListener('click', async () => {
+      document.querySelector('#search-results').innerHTML = '';
+      global.search.page = global.search.page + 1;
+      search()
+    })
   }
 
 
@@ -116,3 +152,6 @@ function init(){
 
 
 init();
+
+
+

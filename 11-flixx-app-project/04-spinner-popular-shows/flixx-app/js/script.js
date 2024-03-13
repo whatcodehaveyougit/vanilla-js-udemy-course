@@ -45,7 +45,7 @@ async function displayPopularShows() {
     const div = document.createElement('div');
     div.classList.add('card');
     div.innerHTML = `
-          <a href="tv-details.html?id=${show.id}">
+          <a href="show-details.html?id=${show.id}">
             ${
               show.poster_path
                 ? `<img
@@ -123,7 +123,7 @@ function init() {
     case '/movie-details.html':
       console.log('Movie Details');
       break;
-    case '/tv-details.html':
+    case '/show-details.html':
       console.log('TV Details');
       break;
     case '/search.html':

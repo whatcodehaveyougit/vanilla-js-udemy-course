@@ -41,6 +41,36 @@ async function displayPopularMovies(){
     })
 }
 
+async function displayPopularMoviesFromSearch(results, type){
+  toggleSpinner()
+  results.forEach((result) => {
+    const div = document.createElement('div')
+    div.classList.add('card');
+    div.innerHTML =
+    `<a href="${type === 'tv' ? 'show' : type}-details.html?id=${result.id}">
+        ${ result.poster_path ?
+          `<img
+        src="https://image.tmdb.org/t/p/w500${result.poster_path}"
+        class="card-img-top"
+        alt=${type === 'movie' ? result.title : result.name}
+      />` :
+        `<img
+        src="images/no-image.jpg"
+        class="card-img-top"
+        alt="result Title"
+      />`}
+    </a>
+    <div class="card-body">
+      <h5 class="card-title">${type === 'movie' ? result.title : result.name}</h5>
+      <p class="card-text">
+        <small class="text-muted">${type === 'movie' ? result.release_date : result.first_air_date }</small>
+      </p>
+    </div>`
+    removeSpinner()
+    document.querySelector('#search-results').appendChild(div)
+    })
+}
+
 async function displayPopularShows(){
   toggleSpinner()
   console.log('helo')
@@ -73,4 +103,4 @@ async function displayPopularShows(){
     })
 }
 
-export { displayPopularMovies, displayPopularShows}
+export { displayPopularMovies, displayPopularShows, displayPopularMoviesFromSearch}

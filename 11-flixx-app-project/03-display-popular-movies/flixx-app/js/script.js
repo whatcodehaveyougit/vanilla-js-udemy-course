@@ -76,7 +76,7 @@ function init() {
     case '/movie-details.html':
       console.log('Movie Details');
       break;
-    case '/tv-details.html':
+    case '/show-details.html':
       console.log('TV Details');
       break;
     case '/search.html':
