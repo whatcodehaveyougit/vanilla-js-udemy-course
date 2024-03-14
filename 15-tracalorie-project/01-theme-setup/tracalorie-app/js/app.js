@@ -5,7 +5,18 @@ class App {
     document.getElementById('workout-form').addEventListener('submit', this._newItem.bind(this, 'workout'));
     document.getElementById('meal-items').addEventListener('click', this._removeItem.bind(this, 'meal'));
     document.getElementById('workout-items').addEventListener('click', this._removeItem.bind(this, 'workout'));
+    document.getElementById('filter-meals').addEventListener('keyup', this._filterItems.bind(this, 'meal'));
+    document.getElementById('filter-workouts').addEventListener('keyup', this._filterItems.bind(this, 'workout'));
+    document.getElementById('reset').addEventListener('click', this._reset.bind(this));
 
+  }
+
+  _reset(){
+    this._tracker = new CalorieTracker();
+    document.getElementById('meal-items').innerHTML = '';
+    document.getElementById('workout-items').innerHTML = '';
+    document.getElementById('filter-meals').value = '';
+    document.getElementById('filter-workouts').value = '';
   }
 
   _removeItem(type, e){
@@ -26,6 +37,23 @@ class App {
       this._tracker._render();
     }
   }
+
+  _filterItems(type, e){
+    console.log(e.target.value)
+    const text = e.target.value.toLowerCase();
+    const items = document.querySelectorAll(`#${type}-items .card`);
+    items.forEach(item => {
+      console.log(item)
+      const itemName = item.querySelector('h4').textContent.toLowerCase();
+      console.log(itemName)
+      if(itemName.indexOf(text) !== -1){
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    })
+  }
+
 
   _newItem(type, e){
     e.preventDefault();
@@ -83,6 +111,9 @@ class App {
     </div>`
     document.getElementById(`${type}-items`).appendChild(element);
   }
+
+
+
 }
 
 class CalorieTracker {
@@ -98,9 +129,20 @@ class CalorieTracker {
     this._displayCaloriesBurned();
     this._displayCaloriesRemaining()
     this._updateProgressBar();
+
+    document.getElementById('limit-form').addEventListener('submit', this._setLimit.bind(this));
+
   }
 
   // Public methods
+
+  reset(){
+    this._calorieLimit = 2000;
+    this._totalCalories = 0;
+    this._meals = [];
+    this._workouts = [];
+    this._render();
+  }
 
   addMeal(meal){
     this._meals.push(meal);
@@ -198,6 +240,29 @@ class CalorieTracker {
     this._displayCaloriesBurned();
     this._displayCaloriesRemaining();
     this._updateProgressBar()
+  }
+
+  setLimit(limit){
+    this._calorieLimit = +limit; // Again, the plus sign converts the value to a number
+    this._displayCaloriesLimit();
+    this._render();
+    const modalEl = document.getElementById('limit-modal');
+    const modal = bootstrap.Modal.getInstance(modalEl);
+    modal.hide();
+  }
+
+  _setLimit(e){
+    e.preventDefault()
+    console.log(e)
+    const limit = document.getElementById('limit');
+    console.log(limit.value);
+    if(limit.value === ''){
+      alert('Please enter a value');
+      return;
+    } else {
+      this.setLimit(limit.value);
+    }
+
   }
 
 }
