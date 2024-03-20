@@ -1,4 +1,4 @@
-const fizzBuzz = require('./fizzbizz');
+const fizzBuzz = require('./fizzbuzz');
 
 describe('fizzbuzz', () => {
   it('should be a function', () => {
@@ -22,7 +22,6 @@ describe('fizzbuzz', () => {
     expect(fizzBuzz(10)).toEqual('Buzz');
     expect(fizzBuzz(20)).toEqual('Buzz');
   });
-
   it('should return FizzBuzz if divisible by 3 & 5', () => {
     expect(fizzBuzz(15)).toEqual('FizzBuzz');
     expect(fizzBuzz(30)).toEqual('FizzBuzz');
